@@ -2,21 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// auth routes 
+Auth::routes();
+Route::get('admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+Route::post('admin/login', 'Auth\AdminLoginController@login')->name('admin.login');
+Route::post('admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
 Route::get('/', function () {
-    return view('backend.admin.dashboard');
+    return view('welcome');
 });
-
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+
+// backend routes 
+Route::middleware('admin')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
+    Route::get('/', 'AdminController@dashboard')->name('dashboard');
+    Route::get('/profile/password-setting', 'AdminController@passwordSetting')->name('password-setting');
+    Route::put('/profile/update-password', 'AdminController@updatePassword')->name('update-password');
+    Route::get('/profile/profile-setting', 'AdminController@profileSetting')->name('profile-setting');
+    Route::put('/profile/update-profile', 'AdminController@updateProfile')->name('update-profile');
+});

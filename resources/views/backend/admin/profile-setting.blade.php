@@ -1,8 +1,7 @@
 @extends('layouts.backend.master')
-@section('title', 'Dashboard')
+@section('title', 'Profile setting')
 @section('content')
 <div class="app-main__outer">
-    
     <div class="app-main__inner">
         <div class="app-page-title">
             <div class="page-title-wrapper">
@@ -11,11 +10,7 @@
                         <i class="pe-7s-car icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div>DASHBOARD
-                        <div class="page-title-subheading">This is an example dashboard created using
-                            build-in elements and components.
-                        </div>
-                    </div>
+                    <div>Admin profile setting</div>
                 </div>
                 <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
@@ -72,61 +67,69 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-midnight-bloom">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Total Orders</div>
-                            <div class="widget-subheading">Last year expenses</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>1896</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-arielle-smile">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Clients</div>
-                            <div class="widget-subheading">Total Clients Profit</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>$ 568</span></div>
+        {{-- setting form --}}
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Update profile</h5>
+                <form method="POST" action="{{ route('admin.update-profile') }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="position-relative row form-group">
+                        <label for="email" class="col-sm-2 col-form-label">Admin email</label>
+                        <div class="col-sm-10">
+                            <input name="email" id="email" type="text" value="{{ auth('admin')->user()->email }}"
+                                class="form-control" readonly>
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-grow-early">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Followers</div>
-                            <div class="widget-subheading">People Interested</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-white"><span>46%</span></div>
+                    <div class="position-relative row form-group">
+                        <label for="type" class="col-sm-2 col-form-label">Admin type</label>
+                        <div class="col-sm-10">
+                            <input name="type" id="type" type="text" value="{{ auth('admin')->user()->type }}"
+                                class="form-control" readonly>
+                            @error('type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                <div class="card mb-3 widget-content bg-premium-dark">
-                    <div class="widget-content-wrapper text-white">
-                        <div class="widget-content-left">
-                            <div class="widget-heading">Products Sold</div>
-                            <div class="widget-subheading">Revenue streams</div>
-                        </div>
-                        <div class="widget-content-right">
-                            <div class="widget-numbers text-warning"><span>$14M</span></div>
+                    <div class="position-relative row form-group">
+                        <label for="username" class="col-sm-2 col-form-label">Admin username</label>
+                        <div class="col-sm-10">
+                            <input name="username" id="username" type="text" class="form-control" 
+                            value={{ auth('admin')->user()->name }} required>
+                            @error('username')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                </div>
+                    <div class="position-relative row form-group">
+                        <label for="mobile" class="col-sm-2 col-form-label">Mobile number</label>
+                        <div class="col-sm-10">
+                            <input name="mobile" id="mobile" type="text" class="form-control"
+                                value="{{ auth('admin')->user()->mobile }}" required>
+                            @error('mobile')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="position-relative row form-group">
+                        <label for="image" class="col-sm-2 col-form-label">User photo</label>
+                        <div class="col-sm-10">
+                            <input name="image" id="image" type="file" class="">
+                            @error('image')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary">update</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </div> <!-- end setting form -->
     @include('layouts.backend.footer')
 </div>
 @endsection

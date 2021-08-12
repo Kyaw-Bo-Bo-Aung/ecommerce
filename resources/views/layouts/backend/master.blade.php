@@ -13,6 +13,7 @@
     <meta name="msapplication-tap-highlight" content="no">
 
     <link href="{{ asset('backend/css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/css/custom.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -25,7 +26,10 @@
 
         </div>
     </div>
-    <script type="text/javascript" src="{{ asset('backend/js/main.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{{ asset('backend/js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/js/custom.js') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>
