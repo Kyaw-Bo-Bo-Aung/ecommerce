@@ -28,7 +28,7 @@ class UpdateProfileRequest extends FormRequest
             'type' => 'required',
             'username' => 'required|min:2|max:255',
             'mobile' => 'required|regex:/[0-9]+/|min:6|max:12',
-            'image' => 'sometimes|mimes:jpg,jpeg,png'
+            'new_photo' => 'sometimes|image'
         ];
     }
     public function messages()

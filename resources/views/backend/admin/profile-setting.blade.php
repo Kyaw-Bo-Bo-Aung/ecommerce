@@ -97,8 +97,8 @@
                     <div class="position-relative row form-group">
                         <label for="username" class="col-sm-2 col-form-label">Admin username</label>
                         <div class="col-sm-10">
-                            <input name="username" id="username" type="text" class="form-control" 
-                            value={{ auth('admin')->user()->name }} required>
+                            <input name="username" id="username" type="text" class="form-control"
+                                value={{ auth('admin')->user()->name }} required>
                             @error('username')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -115,12 +115,38 @@
                         </div>
                     </div>
                     <div class="position-relative row form-group">
-                        <label for="image" class="col-sm-2 col-form-label">User photo</label>
+                        <label for="photo" class="col-sm-2 col-form-label">User photo</label>
                         <div class="col-sm-10">
-                            <input name="image" id="image" type="file" class="">
-                            @error('image')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            @if (!auth('admin')->user()->photo)
+                                <input name="new_photo" id="new_photo" type="file" class="">
+                                @error('new_photo')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            @else
+                                <ul class="nav nav-tabs" id="photo" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="current_photo_tab" data-toggle="tab"
+                                            href="#current_photo" role="tab" aria-controls="current_photo"
+                                            aria-selected="true">Current photo</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="new_photo_tab" data-toggle="tab" href="#new_photo"
+                                            role="tab" aria-controls="new_photo" aria-selected="false">New photo</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="photoContent">
+                                    <div class="tab-pane fade show active" id="current_photo" role="tabpanel"
+                                        aria-labelledby="current_photo_tab">
+                                        <input type="text" value="{{auth('admin')->user()->photo}}" name="current_photo" hidden>
+                                        <img src="{{ asset('storage/' . auth('admin')->user()->photo )}}" alt="admin_avatar" 
+                                        class="img-fluid" width="70px">
+                                    </div>
+                                    <div class="tab-pane fade" id="new_photo" role="tabpanel"
+                                        aria-labelledby="new_photo_tab">
+                                        <input name="new_photo" id="new_photo" type="file" class="">
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div>
