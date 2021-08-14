@@ -38,6 +38,7 @@ class UpdateProfileRequest extends FormRequest
             'mobile.min' => 'The mobile number should be at least 6 characters',
             'mobile.max' => 'The mobile number allows only 12 characters',
             'mobile.regex' => 'The mobile number should be integer',
+            'new_photo.image' => 'The file type must be an image type.'
         ];
     }
 }

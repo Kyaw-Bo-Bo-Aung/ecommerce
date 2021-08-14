@@ -20,4 +20,7 @@ Route::middleware('admin')->namespace('Admin')->prefix('admin')->name('admin.')-
     Route::put('/profile/update-password', 'AdminController@updatePassword')->name('update-password');
     Route::get('/profile/profile-setting', 'AdminController@profileSetting')->name('profile-setting');
     Route::put('/profile/update-profile', 'AdminController@updateProfile')->name('update-profile');
+    // section
+    Route::get('/sections', 'SectionController@index')->name('sections');
+    Route::post('/sections/update-status', 'SectionController@updateStatus');
 });

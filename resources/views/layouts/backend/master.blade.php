@@ -23,13 +23,14 @@
             @include('layouts.backend.sidebar')
             
             @yield('content')
-
+            
         </div>
     </div>
+
+    @include('layouts.backend.footer')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="{{ asset('backend/js/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/js/custom.js') }}"></script>
     @yield('scripts')
 </body>
-
 </html>

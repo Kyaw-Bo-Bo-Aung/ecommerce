@@ -7,10 +7,11 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="pe-7s-car icon-gradient bg-mean-fruit">
+                        <i class="pe-7s-config icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div>Admin password setting</div>
+                    <div><i class="metismenu-icon pe-7s-config d-inline-block d-md-none"></i> 
+                        Admin password setting</div>
                 </div>
                 <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
@@ -145,6 +146,5 @@
             </div>
         </div>
     </div> <!-- end setting form -->
-    @include('layouts.backend.footer')
 </div>
 @endsection

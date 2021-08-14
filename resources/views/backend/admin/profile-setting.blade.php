@@ -7,10 +7,11 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="pe-7s-car icon-gradient bg-mean-fruit">
+                        <i class="pe-7s-config icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div>Admin profile setting</div>
+                    <div> <i class="metismenu-icon pe-7s-config d-inline-block d-md-none"></i> 
+                        Admin profile setting</div>
                 </div>
                 <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
@@ -97,8 +98,11 @@
                     <div class="position-relative row form-group">
                         <label for="username" class="col-sm-2 col-form-label">Admin username</label>
                         <div class="col-sm-10">
+                            {{-- @php
+                                dd(auth('admin')->user()->name);
+                            @endphp --}}
                             <input name="username" id="username" type="text" class="form-control"
-                                value={{ auth('admin')->user()->name }} required>
+                                value="{{ auth('admin')->user()->name }}" required>
                             @error('username')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -146,6 +150,9 @@
                                         <input name="new_photo" id="new_photo" type="file" class="">
                                     </div>
                                 </div>
+                                @error('new_photo')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             @endif
                         </div>
                     </div>
@@ -156,6 +163,5 @@
             </div>
         </div>
     </div> <!-- end setting form -->
-    @include('layouts.backend.footer')
 </div>
 @endsection
