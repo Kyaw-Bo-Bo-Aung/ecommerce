@@ -75,6 +75,18 @@
                                 Sections
                             </a>
                         </li>
+                        <li>
+                            <a href="{{route('admin.categories.index')}}">
+                                <i class="metismenu-icon"></i>
+                                Categories
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('admin.subcategories.index')}}">
+                                <i class="metismenu-icon"></i>
+                                Sub-categories
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

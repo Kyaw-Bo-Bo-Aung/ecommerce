@@ -23,4 +23,12 @@ Route::middleware('admin')->namespace('Admin')->prefix('admin')->name('admin.')-
     // section
     Route::get('/sections', 'SectionController@index')->name('sections');
     Route::post('/sections/update-status', 'SectionController@updateStatus');
+    //categories
+    Route::resource('/categories', 'CategoryController');
+    Route::post('/categories/update-status', 'CategoryController@updateStatus');
+    Route::get('/categories/data-tables/ssd', 'CategoryController@ssd');
+    // subcategories
+    Route::resource('/subcategories', 'SubcategoryController');
+    Route::post('/subcategories/update-status', 'SubcategoryController@updateStatus');
+    Route::get('/subcategories/data-tables/ssd', 'SubcategoryController@ssd');
 });

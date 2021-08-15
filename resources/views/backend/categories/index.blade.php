@@ -1,5 +1,5 @@
 @extends('layouts.backend.master')
-@section('title', 'Section')
+@section('title', 'Categories')
 @section('content')
 <div class="app-main__outer">
     <div class="app-main__inner">
@@ -11,7 +11,7 @@
                         </i>
                     </div>
                     <div><i class="metismenu-icon pe-7s-config d-inline-block d-md-none"></i>
-                        Sections</div>
+                        Categories</div>
                 </div>
                 <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
@@ -68,79 +68,102 @@
                 </div>
             </div>
         </div>
-        {{-- setting form --}}
+        {{-- table --}}
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">Manage your sections</h5>
+                <h5 class="card-title">Manage your categories</h5>
 
-                <table id="section_table" class="table table-hover">
-                    <thead class="bg-light">
+                <table id="categories_table" class="table table-hover">
+                    <thead>
                         <th>Name</th>
                         <th>Status</th>
                     </thead>
-                    <tbody>
-                        @foreach ($sections as $section)
+                    {{-- <tbody>
+                        @php
+                            $category_no = 1;
+                        @endphp
+                        @foreach ($categories as $category)
                             <tr>
-                                <td> {{ $section->name }}</td>
+                                <td> {{ $category_no++ }}</td>
+                                <td> {{ $category->name }}</td>
                                 <td>
-                                    @if ($section->status === 1)
-                                        <div id="status_label_{{ $section->id }}" class="custom-control custom-switch">
-                                            <input type="checkbox" status="{{ $section->status }}"
+                                    @if ($category->status === 1)
+                                        <div id="status_label_{{ $category->id }}" class="custom-control custom-switch">
+                                            <input type="checkbox" status="{{ $category->status }}"
                                                 class="update_status_toggler custom-control-input"
-                                                id="customSwitch{{ $section->id }}" checked
-                                                section_id="{{ $section->id }}">
-                                            <label class="custom-control-label" id="section_{{$section->id}}"
-                                                for="customSwitch{{ $section->id }}">Active</label>
+                                                id="customSwitch{{ $category->id }}" checked
+                                                category_id="{{ $category->id }}">
+                                            <label class="custom-control-label" id="category_{{$category->id}}"
+                                                for="customSwitch{{ $category->id }}">Active</label>
                                         </div>
                                     @else
-                                        <div id="status_label_{{ $section->id }}" class="custom-control custom-switch">
-                                            <input type="checkbox" status="{{ $section->status }}"
+                                        <div id="status_label_{{ $category->id }}" class="custom-control custom-switch">
+                                            <input type="checkbox" status="{{ $category->status }}"
                                                 class="update_status_toggler custom-control-input"
-                                                id="customSwitch{{ $section->id }}" section_id="{{ $section->id }}">
-                                            <label class="custom-control-label" id="section_{{$section->id}}"
-                                                for="customSwitch{{ $section->id }}">Inactive</label>
+                                                id="customSwitch{{ $category->id }}" category_id="{{ $category->id }}">
+                                            <label class="custom-control-label" id="category_{{$category->id}}"
+                                                for="customSwitch{{ $category->id }}">Inactive</label>
                                         </div>
                                     @endif
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
-                    <tfoot class="bg-light">
+                    </tbody> --}}
+                    <tfoot>
                         <th>Name</th>
                         <th>Status</th>
                     </tfoot>
                 </table>
             </div>
         </div>
-    </div> <!-- end setting form -->
+    </div> <!-- end table -->
 </div>
 @endsection
 @section('scripts')
 <script>
     $(function() {
-        $('#section_table').dataTable();
-        $('.update_status_toggler').on('change', function(e) {
+        let data_table = $('#categories_table').dataTable({
+                            processing: true,
+                            serverSide: true,
+                            ajax: "/admin/categories/data-tables/ssd",
+                            columns: [
+                                {
+                                    data: 'name',
+                                    name: 'name'
+                                },
+                                {
+                                    data: 'status',
+                                    name: 'status',
+                                    searchable : false,
+                                    orderable : false
+                                }
+                            ]
+                        });
+
+        // $(document).on('change', '.update_status_toggler', function(){
+        //     alert('ok');
+        // })
+        $(document).on('change', '.update_status_toggler', function(e) {
             e.preventDefault();
             let status = $(this).attr('status');
-            let section_id = $(this).attr('section_id');
-            //    alert(section_id);
+            let category_id = $(this).attr('category_id');
             $.ajax({
-                url: '/admin/sections/update-status',
+                url: '/admin/categories/update-status',
                 type: 'POST',
                 data: {
                     status: status,
-                    section_id: section_id
+                    category_id: category_id
                 },
                 success: function(res) {
-                       let section_id = res.section_id;
+                       let category_id = res.category_id;
                        let status = res.status;
-                       console.log(status);
+                    //    console.log(status);
                        if(status == 1) {
-                        $('#section_'+section_id).text('Active');
-                        $('#customSwitch'+section_id).attr('status', status);
+                        $('#category_'+category_id).text('Active');
+                        $('#customSwitch'+category_id).attr('status', status);
                        }else if(status == 0){
-                        $('#section_'+section_id).text('Inactive');
-                        $('#customSwitch'+section_id).attr('status', status);
+                        $('#category_'+category_id).text('Inactive');
+                        $('#customSwitch'+category_id).attr('status', status);
                        }    
                 }
             })

@@ -1,0 +1,13 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Subcategory extends Model
+{
+    protected $fillable = [
+        'category_id', 'section_id', 'name', 'image', 'discount', 'description',
+        'url', 'meta_title', 'meta_description', 'meta_keywords', 'status'
+    ];
+}
