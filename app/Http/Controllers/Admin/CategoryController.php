@@ -17,12 +17,18 @@ class CategoryController extends Controller
 
     public function create()
     {
-        //
+        return view('backend.categories.create');
     }
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:2|max:255'
+        ]);
+        Category::create([
+            'name' => $request->name
+        ]);
+        return 'added';
     }
 
     public function show(Category $category)
@@ -32,17 +38,23 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        //
+        return view('backend.categories.edit', ['category' => $category]);
     }
 
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:2|max:255'
+        ]);
+        Category::where('id', $category->id)->update([
+            'name' => $request->name
+        ]);
+        return 'updated';
     }
 
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
     }
 
     public function updateStatus(Request $request)
@@ -80,8 +92,18 @@ class CategoryController extends Controller
                     };
                     return $status;
                 })
+                ->editColumn('action', function($category){
+                    $action = '<a href="/admin/categories/'.$category->id.'/edit" class="btn btn-warning">
+                                <i class="metismenu-icon pe-7s-config"></i>
+                                </a>
+                                <a class="delete_btn btn btn-danger" href="#" data-id='.$category->id.'>
+                                <i class="metismenu-icon pe-7s-trash"></i>
+                                </a>';
+                                
+                    return $action;
+                })
                 ->removeColumn('id')
-                ->rawColumns(['status'])
+                ->rawColumns(['status', 'action'])
                 ->make(true);
     }
 }

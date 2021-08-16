@@ -35,64 +35,47 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="{{route('admin.dashboard')}}" class="{{ Request::is('admin') ? 'mm-active' : ''}}">
+                    <a href="{{ route('admin.dashboard') }}" class="{{ Request::is('admin') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Dashboard
                     </a>
                 </li>
-                <li class="app-sidebar__heading">UI Components</li>
+                <li class="app-sidebar__heading">Setting</li>
                 <li>
-                    <a href="#" class="{{ Request::is('admin/profile/*') ? 'mm-active' : ''}}">
-                        <i class="metismenu-icon pe-7s-config"></i>
-                        Setting
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    <a href="{{ route('admin.profile-setting') }}" class="{{ Request::is('admin/profile/profile-setting') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-user"></i>
+                            Profile setting
                     </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('admin.profile-setting' )}}">
-                                <i class="metismenu-icon"></i>
-                                Profile setting
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.password-setting' )}}">
-                                <i class="metismenu-icon"></i>
-                                Password setting
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#" class="{{ Request::is('admin/sections*') ? 'mm-active' : ''}}">
-                        <i class="metismenu-icon pe-7s-car"></i>
-                        Catalogues
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    <a href="{{ route('admin.password-setting') }}" class="{{ Request::is('admin/profile/password-setting') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-lock"></i>
+                        Password setting
                     </a>
-                    <ul>
-                        <li>
-                            <a href="{{route('admin.sections')}}">
-                                <i class="metismenu-icon"></i>
-                                Sections
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('admin.categories.index')}}">
-                                <i class="metismenu-icon"></i>
-                                Categories
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('admin.subcategories.index')}}">
-                                <i class="metismenu-icon"></i>
-                                Sub-categories
-                            </a>
-                        </li>
-                    </ul>
+                </li>
+                <li class="app-sidebar__heading">Catelogues</li>
+                <li>
+                    <a href="{{ route('admin.sections') }}" class="{{ Request::is('admin/sections*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-albums"></i>
+                        Sections
+                    </a>
                 </li>
                 <li>
-                    <a href="tables-regular.html">
-                        <i class="metismenu-icon pe-7s-display2"></i>
-                        Tables
+                    <a href="{{ route('admin.categories.index') }}" class="{{ Request::is('admin/categories*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-photo-gallery"></i>
+                        Categories
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.subcategories.index') }}" class="{{ Request::is('admin/subcategories*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-network"></i>
+                        Sub-categories
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="metismenu-icon pe-7s-box2"></i>
+                        Products
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Widgets</li>

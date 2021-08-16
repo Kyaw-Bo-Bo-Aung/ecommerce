@@ -70,48 +70,24 @@
         </div>
         {{-- table --}}
         <div class="main-card mb-3 card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-title mb-0">Manage your categories</div>
+                <div class="mr-2">
+                    <a href="{{ route('admin.categories.create') }}"><button class="btn btn-success">Add
+                            category</button></a>
+                </div>
+            </div>
             <div class="card-body">
-                <h5 class="card-title">Manage your categories</h5>
-
                 <table id="categories_table" class="table table-hover">
-                    <thead>
+                    <thead class="bg-light">
                         <th>Name</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </thead>
-                    {{-- <tbody>
-                        @php
-                            $category_no = 1;
-                        @endphp
-                        @foreach ($categories as $category)
-                            <tr>
-                                <td> {{ $category_no++ }}</td>
-                                <td> {{ $category->name }}</td>
-                                <td>
-                                    @if ($category->status === 1)
-                                        <div id="status_label_{{ $category->id }}" class="custom-control custom-switch">
-                                            <input type="checkbox" status="{{ $category->status }}"
-                                                class="update_status_toggler custom-control-input"
-                                                id="customSwitch{{ $category->id }}" checked
-                                                category_id="{{ $category->id }}">
-                                            <label class="custom-control-label" id="category_{{$category->id}}"
-                                                for="customSwitch{{ $category->id }}">Active</label>
-                                        </div>
-                                    @else
-                                        <div id="status_label_{{ $category->id }}" class="custom-control custom-switch">
-                                            <input type="checkbox" status="{{ $category->status }}"
-                                                class="update_status_toggler custom-control-input"
-                                                id="customSwitch{{ $category->id }}" category_id="{{ $category->id }}">
-                                            <label class="custom-control-label" id="category_{{$category->id}}"
-                                                for="customSwitch{{ $category->id }}">Inactive</label>
-                                        </div>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody> --}}
-                    <tfoot>
+                    <tfoot class="bg-light">
                         <th>Name</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tfoot>
                 </table>
             </div>
@@ -122,27 +98,29 @@
 @section('scripts')
 <script>
     $(function() {
-        let data_table = $('#categories_table').dataTable({
-                            processing: true,
-                            serverSide: true,
-                            ajax: "/admin/categories/data-tables/ssd",
-                            columns: [
-                                {
-                                    data: 'name',
-                                    name: 'name'
-                                },
-                                {
-                                    data: 'status',
-                                    name: 'status',
-                                    searchable : false,
-                                    orderable : false
-                                }
-                            ]
-                        });
+        let table = $('#categories_table').dataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "/admin/categories/data-tables/ssd",
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    searchable: false,
+                    orderable: false
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    searchable: false,
+                    orderable: false
+                }
+            ]
+        });
 
-        // $(document).on('change', '.update_status_toggler', function(){
-        //     alert('ok');
-        // })
         $(document).on('change', '.update_status_toggler', function(e) {
             e.preventDefault();
             let status = $(this).attr('status');
@@ -155,16 +133,56 @@
                     category_id: category_id
                 },
                 success: function(res) {
-                       let category_id = res.category_id;
-                       let status = res.status;
+                    let category_id = res.category_id;
+                    let status = res.status;
                     //    console.log(status);
-                       if(status == 1) {
-                        $('#category_'+category_id).text('Active');
-                        $('#customSwitch'+category_id).attr('status', status);
-                       }else if(status == 0){
-                        $('#category_'+category_id).text('Inactive');
-                        $('#customSwitch'+category_id).attr('status', status);
-                       }    
+                    if (status == 1) {
+                        $('#category_' + category_id).text('Active');
+                        $('#customSwitch' + category_id).attr('status', status);
+                    } else if (status == 0) {
+                        $('#category_' + category_id).text('Inactive');
+                        $('#customSwitch' + category_id).attr('status', status);
+                    }
+                }
+            })
+        })
+
+        $(document).on('click', '.delete_btn', function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#bbb',
+                confirmButtonText: 'Delete',
+                reverseButtons: true,
+                focusConfirm: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/categories/' + id,
+                        type: 'DELETE',
+                        success: function(res) {
+                            // console.log(table);
+                            table.api().ajax.reload();
+                        }
+                    })
+                    // sweetalert 2 toast 
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Deleted successfully'
+                    })
                 }
             })
         })
