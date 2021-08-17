@@ -70,19 +70,32 @@
         </div>
         {{-- table --}}
         <div class="main-card mb-3 card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-title mb-0">Manage your sub-categories</div>
+                <div class="mr-2">
+                    <a href="{{ route('admin.subcategories.create') }}">
+                        <button class="btn btn-success">Add sub-category</button>
+                    </a>
+                </div>
+            </div>
             <div class="card-body">
-                <h5 class="card-title">Manage your sub-categories</h5>
                 <div class="table-responsive">
                     <table class="table table-hover" id="subcategories_table">
                         <thead class="bg-light">
                             <th>Name</th>
+                            <th>Section</th>
+                            <th>Category</th>
                             <th>Url</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </thead>
                         <tfoot class="bg-light">
                             <th>Name</th>
+                            <th>Section</th>
+                            <th>Category</th>
                             <th>Url</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tfoot>
                     </table>
                 </div>
@@ -94,27 +107,40 @@
 @section('scripts')
 <script>
     $(function() {
-        let data_table = $('#subcategories_table').DataTable({
-                            processing: true,
-                            serverSide: true,
-                            ajax: "/admin/subcategories/data-tables/ssd",
-                            columns: [
-                                {
-                                    data: 'name',
-                                    name: 'name'
-                                },
-                                {
-                                    data: 'url',
-                                    name: 'url'
-                                },
-                                {
-                                    data: 'status',
-                                    name: 'status',
-                                    searchable : false,
-                                    orderable : false
-                                }
-                            ]
-                        });
+        let table = $('#subcategories_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "/admin/subcategories/data-tables/ssd",
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'section_id',
+                    name: 'section_id'
+                },
+                {
+                    data: 'category_id',
+                    name: 'category_id'
+                },
+                {
+                    data: 'url',
+                    name: 'url',
+                    searchable: false,
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    searchable: false,
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    searchable: false,
+
+                },
+            ]
+        });
 
         $(document).on('change', '.update_status_toggler', function(e) {
             e.preventDefault();
@@ -141,6 +167,46 @@
                 }
             })
         });
+
+        $(document).on('click', '.delete_btn', function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#bbb',
+                confirmButtonText: 'Delete',
+                reverseButtons: true,
+                focusConfirm: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/subcategories/' + id,
+                        type: 'DELETE',
+                        success: function(res) {
+                            // console.log(table);
+                            table.ajax.reload();
+                        }
+                    })
+                    // sweetalert 2 toast 
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Deleted successfully'
+                    })
+                }
+            })
+        })
     })
 </script>
 @endsection

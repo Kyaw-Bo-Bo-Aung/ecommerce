@@ -28,7 +28,8 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name
         ]);
-        return 'added';
+        return redirect()->route('admin.categories.index')
+                        ->with('status', 'New category created successfully');
     }
 
     public function show(Category $category)
@@ -49,7 +50,8 @@ class CategoryController extends Controller
         Category::where('id', $category->id)->update([
             'name' => $request->name
         ]);
-        return 'updated';
+        return redirect()->route('admin.categories.index')
+                        ->with('status', 'Category info updated successfully');
     }
 
     public function destroy(Category $category)
