@@ -62,7 +62,7 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($id);
         $admin->name = $request->username;
         $admin->photo = $path;
-        $admin->mobile = $request->mobile;
+        $admin->phone = $request->mobile;
         $admin->update();
 
         // return "profile updeated";

@@ -1,5 +1,5 @@
 @extends('layouts.backend.master')
-@section('title', 'Categories')
+@section('title', 'Products')
 @section('content')
 <div class="app-main__outer">
     <div class="app-main__inner">
@@ -7,11 +7,11 @@
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
                     <div class="page-title-icon">
-                        <i class="pe-7s-config icon-gradient bg-mean-fruit">
+                        <i class="pe-7s-box2 icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div><i class="metismenu-icon pe-7s-config d-inline-block d-md-none"></i>
-                        Categories</div>
+                    <div><i class="metismenu-icon pe-7s-box2 d-inline-block d-md-none"></i>
+                        Products</div>
                 </div>
                 <div class="page-title-actions">
                     <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
@@ -71,27 +71,38 @@
         {{-- table --}}
         <div class="main-card mb-3 card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="card-title mb-0">Manage your categories</div>
+                <div class="card-title mb-0">Manage your products</div>
                 <div class="mr-2">
-                    <a href="{{ route('admin.categories.create') }}"><button class="btn btn-success">Add
-                            category</button></a>
+                    <a href="{{ route('admin.products.create') }}">
+                        <button class="btn btn-success">Add new product</button>
+                    </a>
                 </div>
             </div>
             <div class="card-body">
-                <table id="categories_table" class="table table-hover">
-                    <thead class="bg-light">
-                        <th>Name</th>
-                        <th>Section</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </thead>
-                    <tfoot class="bg-light">
-                        <th>Name</th>
-                        <th>Section</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tfoot>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="products_table">
+                        <thead class="bg-light">
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Category</th>
+                            <th>Subcategory</th>
+                            <th>Product_color</th>
+                            <th>Product_image</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </thead>
+                        <tfoot class="bg-light">
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Category</th>
+                            <th>Subcategory</th>
+                            <th>Product_color</th>
+                            <th>Product_image</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div> <!-- end table -->
@@ -100,10 +111,10 @@
 @section('scripts')
 <script>
     $(function() {
-        let table = $('#categories_table').dataTable({
+        let table = $('#products_table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "/admin/categories/data-tables/ssd",
+            ajax: "/admin/products/data-tables/ssd",
             columns: [{
                     data: 'name',
                     name: 'name'
@@ -113,85 +124,102 @@
                     name: 'section_id'
                 },
                 {
+                    data: 'category_id',
+                    name: 'category_id'
+                },
+                {
+                    data: 'subcategory_id',
+                    name: 'subcategory_id'
+                },
+                {
+                    data: 'color',
+                    name: 'color',
+                    searchable: false,
+                },
+                {
+                    data: 'image',
+                    name: 'image',
+                    searchable: false,
+                },
+                {
                     data: 'status',
                     name: 'status',
                     searchable: false,
-                    orderable: false
                 },
                 {
                     data: 'action',
                     name: 'action',
                     searchable: false,
-                    orderable: false
-                }
+
+                },
             ]
         });
 
         $(document).on('change', '.update_status_toggler', function(e) {
             e.preventDefault();
             let status = $(this).attr('status');
-            let category_id = $(this).attr('category_id');
+            let product_id = $(this).attr('product_id');
             $.ajax({
-                url: '/admin/categories/update-status',
+                url: '/admin/products/update-status',
                 type: 'POST',
                 data: {
                     status: status,
-                    category_id: category_id
+                    product_id: product_id
                 },
                 success: function(res) {
-                    let category_id = res.category_id;
+                    let product_id = res.product_id;
                     let status = res.status;
                     //    console.log(status);
                     if (status == 1) {
-                        $('#category_' + category_id).text('Active');
-                        $('#customSwitch' + category_id).attr('status', status);
+                        $('#product_' + product_id).text('Active');
+                        $('#customSwitch' + product_id).attr('status', status);
                     } else if (status == 0) {
-                        $('#category_' + category_id).text('Inactive');
-                        $('#customSwitch' + category_id).attr('status', status);
+                        $('#product_' + product_id).text('Inactive');
+                        $('#customSwitch' + product_id).attr('status', status);
                     }
                 }
             })
-        })
+        });
 
-        $(document).on('click', '.delete_btn', function() {
-            let id = $(this).data('id');
-            Swal.fire({
-                title: "Are you sure?",
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#bbb',
-                confirmButtonText: 'Delete',
-                reverseButtons: true,
-                focusConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/admin/categories/' + id,
-                        type: 'DELETE',
-                        success: function(res) {
-                            // console.log(table);
-                            table.api().ajax.reload();
-                        }
-                    })
-                    // sweetalert 2 toast 
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Deleted successfully'
-                    })
-                }
-            })
-        })
+        // $(document).on('click', '.delete_btn', function() {
+        //     let id = $(this).data('id');
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#d33',
+        //         cancelButtonColor: '#bbb',
+        //         confirmButtonText: 'Delete',
+        //         reverseButtons: true,
+        //         focusConfirm: false
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             $.ajax({
+        //                 url: '/admin/subcategories/' + id,
+        //                 type: 'DELETE',
+        //                 success: function(res) {
+        //                     // console.log(table);
+        //                     table.ajax.reload();
+        //                 }
+        //             })
+        //             // sweetalert 2 toast 
+        //             const Toast = Swal.mixin({
+        //                 toast: true,
+        //                 position: 'top-end',
+        //                 showConfirmButton: false,
+        //                 timer: 3000,
+        //                 timerProgressBar: true,
+        //                 didOpen: (toast) => {
+        //                     toast.addEventListener('mouseenter', Swal.stopTimer)
+        //                     toast.addEventListener('mouseleave', Swal.resumeTimer)
+        //                 }
+        //             })
+        //             Toast.fire({
+        //                 icon: 'success',
+        //                 title: 'Deleted successfully'
+        //             })
+        //         }
+        //     })
+        // })
     })
 </script>
 @endsection

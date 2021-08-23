@@ -109,10 +109,10 @@
                         </div>
                     </div>
                     <div class="position-relative row form-group">
-                        <label for="mobile" class="col-sm-2 col-form-label">Mobile number</label>
+                        <label for="mobile" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-10">
                             <input name="mobile" id="mobile" type="text" class="form-control"
-                                value="{{ auth('admin')->user()->mobile }}" required>
+                                value="{{ auth('admin')->user()->phone }}" required>
                             @error('mobile')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

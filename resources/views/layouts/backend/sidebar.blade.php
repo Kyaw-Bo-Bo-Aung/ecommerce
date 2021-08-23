@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('admin.products.index') }}">
                         <i class="metismenu-icon pe-7s-box2"></i>
                         Products
                     </a>

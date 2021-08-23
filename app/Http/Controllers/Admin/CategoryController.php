@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Section;
 use App\Category;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -17,17 +18,23 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('backend.categories.create');
+        $sections = Section::all();
+        return view('backend.categories.create', compact('sections'));
     }
 
     public function store(Request $request)
     {
+        // return $request->all();
         $request->validate([
-            'name' => 'required|min:2|max:255'
+            'name' => 'required|min:2|max:255',
+            'section' => 'required'
         ]);
-        Category::create([
-            'name' => $request->name
-        ]);
+        
+        $category = new Category;
+        $category->name = $request->name;
+        $category->section_id = $request->section;
+        $category->save();
+
         return redirect()->route('admin.categories.index')
                         ->with('status', 'New category created successfully');
     }
@@ -39,17 +46,18 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('backend.categories.edit', ['category' => $category]);
+        $sections = Section::all();
+        return view('backend.categories.edit', compact('category', 'sections'));
     }
 
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|min:2|max:255'
+            'name' => 'required|min:2|max:255',
         ]);
-        Category::where('id', $category->id)->update([
-            'name' => $request->name
-        ]);
+        $category->name = $request->name;
+        $category->section_id = $request->section;
+        $category->update();
         return redirect()->route('admin.categories.index')
                         ->with('status', 'Category info updated successfully');
     }
@@ -93,6 +101,9 @@ class CategoryController extends Controller
                                     </div>';
                     };
                     return $status;
+                })
+                ->editColumn('section_id', function($category){
+                    return $category->section->name ?? 'no section';
                 })
                 ->editColumn('action', function($category){
                     $action = '<a href="/admin/categories/'.$category->id.'/edit" class="btn btn-warning">

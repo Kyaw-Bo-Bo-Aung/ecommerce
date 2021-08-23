@@ -30,4 +30,9 @@
 .login-card{
     max-width: 500px;
 }
-/* ---------------------- flash message ------------------- */
+/*============= select 2 ==================*/
+.select2-results__group{
+    font-size: 1.2em;
+    margin: auto;
+    background: #eee;
+}

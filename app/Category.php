@@ -9,4 +9,14 @@ class Category extends Model
     protected $fillable = [
         'name', 'status'
     ];
+
+    public function section() 
+    {
+        return $this->belongsTo('App\Section');
+    }
+
+    public function subcategories()
+    {
+        return $this->hasMany('App\Subcategory');
+    }
 }

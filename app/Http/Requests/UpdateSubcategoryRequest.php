@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSubcategoryRequest extends FormRequest
+class UpdateSubcategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,8 @@ class CreateSubcategoryRequest extends FormRequest
             'name' => 'required|min:2|max:255',
             'category_id' => 'required',
             'url' => 'required|min:2|max:255',
-            'image' => 'sometimes|image',
+            'new_image' => 'sometimes|image',
+            'current_image' => 'sometimes',
             'discount' => 'required',
             'description' => 'required',
             'meta_title' => 'required',
@@ -40,7 +41,6 @@ class CreateSubcategoryRequest extends FormRequest
         return [
             'image.image' => 'File must be image',
             'category_id.required' => 'Category field is required',
-            'section_id.required' => 'Section field is required',
         ];
     }
 }

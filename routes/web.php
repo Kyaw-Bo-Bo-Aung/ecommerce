@@ -31,4 +31,9 @@ Route::middleware('admin')->namespace('Admin')->prefix('admin')->name('admin.')-
     Route::resource('/subcategories', 'SubcategoryController');
     Route::post('/subcategories/update-status', 'SubcategoryController@updateStatus');
     Route::get('/subcategories/data-tables/ssd', 'SubcategoryController@ssd');
+    // products
+    Route::resource('/products', 'ProductController');
+    Route::post('/products/update-status', 'ProductController@updateStatus');
+    Route::get('/products/data-tables/ssd', 'ProductController@ssd');
+    Route::post('/products/get-relating-subcategory', 'ProductController@getRelatedSubcategory');
 });

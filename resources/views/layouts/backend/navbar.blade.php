@@ -67,7 +67,12 @@
                         <div class="widget-content-left">
                             <div class="btn-group">
                                 <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
-                                    <img width="42" class="rounded-circle" src="{{asset('storage/'.auth('admin')->user()->photo)}}" alt="avatar">
+                                    @if (auth('admin')->user()->photo)
+                                        <img width="42" class="rounded-circle" src="{{asset('storage/'.auth('admin')->user()->photo)}}" alt="avatar">
+                                    @else
+                                        <img width="42" class="rounded-circle" 
+                                        src="https://ui-avatars.com/api/?name={{auth('admin')->user()->name}}&background=c5d7ff" alt="avatar">
+                                    @endif
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
                                 <div tabindex="-1" role="menu" aria-hidden="true"

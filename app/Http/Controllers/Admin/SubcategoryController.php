@@ -8,7 +8,9 @@ use App\Subcategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateSubcategoryRequest;
+use App\Http\Requests\UpdateSubcategoryRequest;
 
 class SubcategoryController extends Controller
 {
@@ -20,14 +22,14 @@ class SubcategoryController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        $sections = Section::all();
+        $categories = Category::where('status', 1)->get();
+        $sections = Section::where('status', 1)->get();
         return view('backend.subcategories.create', compact('categories', 'sections'));
     }
 
     public function store(CreateSubcategoryRequest $request)
     {
-        // dd($request->all());
+        // return $request->all();
         if (!$request->hasFile('image')) {
             $path = ''; 
         }else{
@@ -52,16 +54,45 @@ class SubcategoryController extends Controller
 
     public function edit(Subcategory $subcategory)
     {
-        return view('backend.subcategories.edit');
+        $subcategory->load('category', 'section');
+        $categories = Category::get();
+        $sections = Section::get();
+        return view('backend.subcategories.edit', compact('subcategory', 'categories', 'sections'));
     }
 
-    public function update(Request $request, Subcategory $subcategory)
+    public function update(UpdateSubcategoryRequest $request, Subcategory $subcategory)
     {
-        //
+        // dd($request->all());
+        if (!$request->hasFile('new_image')) {
+            $path = $request->current_image ?? ''; 
+        }else{
+            $new_image = $request->file('new_image');
+            if ($new_image->isValid()) {
+                $new_image_name = uniqid().'_'.$new_image->getClientOriginalName();
+                // dd($new_photo_name);
+                $path = $new_image->storeAs('backend/admin/subcategories', $new_image_name, 'public');
+                Storage::disk('public')->delete($request->current_image);
+            }
+        }    
+
+        $subcategory->name = $request->name;
+        $subcategory->category_id = $request->category_id;
+        $subcategory->image = $path;
+        $subcategory->discount = $request->discount;
+        $subcategory->description = $request->description;
+        $subcategory->url = $request->url;
+        $subcategory->meta_title = $request->meta_title;
+        $subcategory->meta_description = $request->meta_description;
+        $subcategory->meta_keywords = $request->meta_keywords;
+        $subcategory->update();
+
+        return redirect()->route('admin.subcategories.index')
+                        ->with('status', 'Subcategory is updated successfully');
     }
 
     public function destroy(Subcategory $subcategory)
     {
+        Storage::disk('public')->delete($subcategory->image);
         $subcategory->delete();
     }
 
@@ -111,16 +142,6 @@ class SubcategoryController extends Controller
                     }
                     return $category_name;
                 })
-                ->editColumn('section_id', function($subcategory){
-                    $section = Section::where('id', $subcategory->section_id)->first();
-                    if ($section->status != 1) {
-                        $section_name = "<span>".$section->name."</span><small class='mx-1 px-1 
-                                            rounded-pill bg-danger text-white font-weight-bold'>Inactive</small>"; 
-                    }else{
-                        $section_name = $section->name;
-                    }
-                    return $section_name;
-                })
                 ->editColumn('action', function($subcategory){
                     $action = '<a href="/admin/subcategories/'.$subcategory->id.'" class="btn btn-info px-2 py-1">
                                 <i class="metismenu-icon pe-7s-keypad text-dark"></i>
@@ -135,7 +156,7 @@ class SubcategoryController extends Controller
                     return $action;
                 })
                 ->removeColumn('id')
-                ->rawColumns(['status', 'category_id', 'section_id', 'action'])
+                ->rawColumns(['status', 'category_id', 'action'])
                 ->make(true);
     }
 }

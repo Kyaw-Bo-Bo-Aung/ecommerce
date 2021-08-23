@@ -83,7 +83,6 @@
                     <table class="table table-hover" id="subcategories_table">
                         <thead class="bg-light">
                             <th>Name</th>
-                            <th>Section</th>
                             <th>Category</th>
                             <th>Url</th>
                             <th>Status</th>
@@ -91,7 +90,6 @@
                         </thead>
                         <tfoot class="bg-light">
                             <th>Name</th>
-                            <th>Section</th>
                             <th>Category</th>
                             <th>Url</th>
                             <th>Status</th>
@@ -114,10 +112,6 @@
             columns: [{
                     data: 'name',
                     name: 'name'
-                },
-                {
-                    data: 'section_id',
-                    name: 'section_id'
                 },
                 {
                     data: 'category_id',
