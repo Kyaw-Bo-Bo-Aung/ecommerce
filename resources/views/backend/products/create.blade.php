@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            {{-- setting form --}}
+            {{-- product form --}}
             <div class="main-card mb-3 card">
                 <div class="card-body">
                     <h5 class="card-title">Product info</h5>
@@ -98,9 +98,9 @@
                             </div>
                             <div class="col-6 mb-2">
                                 <div class="position-relative form-group">
-                                    <label for="color" class="font-weight-bolder">Product color</label>
-                                    <input name="color" id="color" placeholder="Enter product color" type="text"
-                                        class="form-control" required>
+                                    <label for="color" class="font-weight-bolder d-block">Product color</label>
+                                    <input name="color" id="color" placeholder="Enter product color" type="color"
+                                         required>
                                     @error('color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -119,7 +119,7 @@
                             <div class="col-6 mb-2">
                                 <div class="position-relative form-group">
                                     <label for="discount" class="font-weight-bolder">Product discount</label>
-                                    <input name="discount" id="discount" placeholder="Enter product discount" type="text"
+                                    <input name="discount" id="discount" placeholder="Enter product discount" type="number"
                                         class="form-control" required>
                                     @error('discount')
                                         <span class="text-danger">{{ $message }}</span>
@@ -138,16 +138,16 @@
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label for="category" class="font-weight-bolder">Select category</label>
-                                <select name="category_id" id="category" class="form-control select_option" required>
+                                <select id="category" class="form-control select_option" required>
                                     <option></option>
                                     @foreach ($sections as $section)
                                         <optgroup label="{{ $section->name }}">
                                             @forelse ($section->categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @empty
-                                               <option value="" disabled="disabled">-</option> 
+                                                <option value="" disabled="disabled">-</option>
                                             @endforelse
-                                            
+
                                         </optgroup>
                                     @endforeach
                                 </select>
@@ -157,62 +157,115 @@
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label for="subcategory" class="font-weight-bolder">Select subcategory</label>
-                                    <select name="subcategory_id" id="subcategoryHTML" class="form-control select_option" required>
-                                        
-                                    </select>
-                                    @error('subcategory')
+                                <select name="subcategory_id" id="subcategoryHTML" class="form-control select_option"
+                                    required>
+
+                                </select>
+                                @error('subcategory')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-6 my-2">
+                                <div class="position-relative form-group">
+                                    <label for="image" class="font-weight-bolder">Image</label>
+                                    <input class="d-block" name="image" id="image" type="file">
+                                    @error('image')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
                             </div>
 
-                            {{-- <div class="col-md-12 mb-2">
-                                <label for="section" class="font-weight-bolder">Select section</label>
-                                <select name="section_id" id="section" class="form-control select_option" required>
-                                    <option></option>
-                                    @foreach ($sections as $section)
-                                        <option value="{{ $section->id }}">{{ $section->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('section')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                            <div class="col-6 my-2">
+                                <div class="position-relative form-group">
+                                    <label for="video" class="font-weight-bolder">Video</label>
+                                    <input class="d-block" name="video" id="video" type="file">
+                                    @error('video')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
 
+                            <div class="col-6 mb-2">
+                                <div class="position-relative form-group">
+                                    <label for="weight" class="font-weight-bolder">Weight</label>
+                                    <input name="weight" id="weight" placeholder="Enter product weight" type="number"
+                                        class="form-control">
+                                    @error('weight')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-6 mb-2">
+                                <div class="position-relative form-group">
+                                    <label for="url" class="font-weight-bolder">Url</label>
+                                    <input name="url" id="url" placeholder="Enter product url" type="text"
+                                        class="form-control" required>
+                                    @error('url')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-md-12 mb-2">
-                                <label for="section" class="font-weight-bolder">Select section</label>
-                                <select name="section_id" id="section" class="form-control select_option" required>
-                                    <option></option>
-                                    @foreach ($sections as $section)
-                                        <option value="{{ $section->id }}">{{ $section->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('section')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div> --}}
+                                <div class="position-relative form-group">
+                                    <div class="position-relative form-group">
+                                        <label for="meta_title" class="font-weight-bolder">Meta title</label>
+                                        <textarea name="meta_title" id="meta_title" rows="2" class="form-control"
+                                            placeholder="Enter meta title"></textarea>
+                                        @error('meta_title')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="position-relative form-group">
+                                    <div class="position-relative form-group">
+                                        <label for="meta_description" class="font-weight-bolder">Meta description</label>
+                                        <textarea name="meta_description" id="meta_description" rows="2"
+                                            class="form-control" placeholder="Enter meta description"></textarea>
+                                        @error('meta_description')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="position-relative form-group">
+                                    <div class="position-relative form-group">
+                                        <label for="meta_keywords" class="font-weight-bolder">Meta keywords</label>
+                                        <textarea name="meta_keywords" id="meta_keywords" rows="2" class="form-control"
+                                            placeholder="Enter meta keywords"></textarea>
+                                        @error('meta_keywords')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
                     </form>
                     <div class="text-right my-3">
-                        <a href="{{ route('admin.subcategories.index') }}"><button
+                        <a href="{{ route('admin.products.index') }}"><button
                                 class="btn btn-secondary">Cancel</button></a>
-                        <button id="subcategory_create_btn" class="btn btn-primary">Create</button>
+                        <button id="product_create_btn" class="btn btn-primary">Create</button>
                     </div>
                 </div>
             </div>
-        </div> <!-- end setting form -->
+        </div> <!-- end product form -->
     </div>
 
 @endsection
 @section('scripts')
-    {!! JsValidator::formRequest('App\Http\Requests\CreateSubcategoryRequest') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\CreateProductRequest') !!}
     <script>
         $(function() {
-            $('#subcategory_create_btn').on('click', function(e) {
+            $('#product_create_btn').on('click', function(e) {
                 e.preventDefault();
-                $('#subcategory_create_form').trigger('submit');
-            })
+                $('#product_create_form').trigger('submit');
+            });
             $('#category').select2({
                 theme: 'bootstrap4',
                 placeholder: "<--- Select category --->"
@@ -235,7 +288,8 @@
                     success: function(res) {
                         let html;
                         res.subcategories.forEach(subcategory => {
-                            html += `<option value="${subcategory.id}">${subcategory.name}</option>`
+                            html +=
+                                `<option value="${subcategory.id}">${subcategory.name}</option>`
                         });
                         $('#subcategoryHTML').html(html);
                     }

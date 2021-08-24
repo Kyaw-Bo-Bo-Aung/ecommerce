@@ -8,6 +8,7 @@ use App\Subcategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateProductRequest;
 
 class ProductController extends Controller
 {
@@ -22,29 +23,75 @@ class ProductController extends Controller
         return view('backend.products.create', compact('sections'));
     }
 
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //
+        // dd($request);
+        if (!$request->hasFile('image')) {
+            $path = '';
+        }else{
+            $image = $request->file('image');
+            if ($image->isValid()) {
+                $image_name = uniqid().'_'.$image->getClientOriginalName();
+                // dd($new_photo_name);
+                $path = $image->storeAs('backend/products', $image_name, 'public');
+            }
+        }    
+        $data = $request->all();
+        $data['image'] = $path;
+        Product::create($data);
+        return redirect()->route('admin.products.index')
+            ->with('status', 'New product created successfully');
     }
 
     public function show(Product $product)
     {
-        //
+        return view('backend.products.show', compact('product'));
     }
 
     public function edit(Product $product)
     {
-        //
+        $sections = Section::all();
+        return view('backend.products.edit', compact('product', 'sections'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(CreateProductRequest $request, Product $product)
     {
-        //
+        // return ($request->all());
+        if (!$request->hasFile('new_image')) {
+            $path = $request->current_image ?? ''; 
+        }else{
+            $new_image = $request->file('new_image');
+            if ($new_image->isValid()) {
+                $new_image_name = uniqid().'_'.$new_image->getClientOriginalName();
+                // dd($new_photo_name);
+                $path = $new_image->storeAs('backend/products', $new_image_name, 'public');
+                Storage::disk('public')->delete($request->current_image);
+            }
+        }
+        $product->name = $request->name;
+        $product->subcategory_id = $request->new_subcategory_id ?? $request->subcategory_id;
+        $product->image = $path;
+        $product->video = '';
+        $product->code = $request->code;
+        $product->feature = $request->feature;
+        $product->discount = $request->discount;
+        $product->color = $request->color;
+        $product->price = $request->price;
+        $product->weight = $request->weight;
+        $product->url = $request->url;
+        $product->meta_title = $request->meta_title;
+        $product->meta_description = $request->meta_description;
+        $product->meta_keywords = $request->meta_keywords;
+        $product->update();
+
+        return redirect()->route('admin.products.index')
+                        ->with('status', 'Product is updated successfully');
+
     }
 
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
     }
 
     public function updateStatus(Request $request)
@@ -81,24 +128,6 @@ class ProductController extends Controller
                     };
                     return $status;
                 })
-                ->editColumn('category_id', function($product){
-                    if ($product->category->status != 1) {
-                        $category_name = "<span>".$product->category->name."</span><small class='mx-1 px-1 
-                                         rounded-pill bg-danger text-white font-weight-bold'>Inactive</small>";
-                    }else{
-                        $category_name = $product->category->name;
-                    }
-                    return $category_name;
-                })
-                ->editColumn('section_id', function($product){
-                    if ($product->section->status != 1) {
-                        $section_name = "<span>".$product->section->name."</span><small class='mx-1 px-1 
-                                         rounded-pill bg-danger text-white font-weight-bold'>Inactive</small>";
-                    }else{
-                        $section_name = $product->section->name;
-                    }
-                    return $section_name;
-                })
                 ->editColumn('subcategory_id', function($product){
                     if ($product->subcategory->status != 1) {
                         $subcategory_name = "<span>".$product->subcategory->name."</span><small class='mx-1 px-1 
@@ -109,8 +138,13 @@ class ProductController extends Controller
                     return $subcategory_name;
                 })
                 ->editColumn('image', function($product){
+                    if ($product->image) {
                         $image_path = asset('storage/'.$product->image);
                         $image = '<img src="'.$image_path.'" alt="product-img" width="80px">';
+                    }else{
+                        $image = '<img src="https://ui-avatars.com/api/?name='.$product->name.'" alt="product-img" width="80px">';
+                    }
+                        
                         return $image;
                 })
                 ->editColumn('action', function($product){
@@ -127,7 +161,7 @@ class ProductController extends Controller
                     return $action;
                 })
                 ->removeColumn('id')
-                ->rawColumns(['status', 'category_id', 'section_id', 'subcategory_id', 'image', 'action'])
+                ->rawColumns(['status', 'subcategory_id', 'image', 'action'])
                 ->make(true);
     }
 

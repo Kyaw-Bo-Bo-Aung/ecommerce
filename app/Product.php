@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'subcategory_id', 'name', 'code', 'color', 'price', 'discount', 'image', 'video', 'weight',
+        'feature', 'url', 'meta_title', 'meta_description', 'meta_keywords'
+    ];
 
     public function subcategory()
     {

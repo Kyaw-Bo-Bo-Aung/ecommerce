@@ -37,7 +37,7 @@ class SubcategoryController extends Controller
             if ($image->isValid()) {
                 $image_name = uniqid().'_'.$image->getClientOriginalName();
                 // dd($new_photo_name);
-                $path = $image->storeAs('backend/admin/subcategories', $image_name, 'public');
+                $path = $image->storeAs('backend/subcategories', $image_name, 'public');
             }
         }    
         $data = $request->all();
@@ -70,7 +70,7 @@ class SubcategoryController extends Controller
             if ($new_image->isValid()) {
                 $new_image_name = uniqid().'_'.$new_image->getClientOriginalName();
                 // dd($new_photo_name);
-                $path = $new_image->storeAs('backend/admin/subcategories', $new_image_name, 'public');
+                $path = $new_image->storeAs('backend/subcategories', $new_image_name, 'public');
                 Storage::disk('public')->delete($request->current_image);
             }
         }    
