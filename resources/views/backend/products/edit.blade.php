@@ -243,7 +243,7 @@
                     <div class="text-right my-3">
                         <a href="{{ route('admin.products.index') }}"><button
                                 class="btn btn-secondary">Cancel</button></a>
-                        <button id="product_update_btn" class="btn btn-primary">Create</button>
+                        <button id="product_update_btn" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>

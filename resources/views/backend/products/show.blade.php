@@ -14,185 +14,234 @@
                             Product detail</div>
                     </div>
                     <div class="page-title-actions">
-                        <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom"
-                            class="btn-shadow mr-3 btn btn-dark">
-                            <i class="fa fa-star"></i>
-                        </button>
-                        <div class="d-inline-block dropdown">
-                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                class="btn-shadow dropdown-toggle btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-business-time fa-w-20"></i>
-                                </span>
-                                Buttons
+                        <a href="{{ route('admin.products.index') }}">
+                            <button type="button" class="btn-shadow mr-3 btn btn-dark">
+                                <i class="fa fa-long-arrow-alt-left mr-2"></i> View products
                             </button>
-                            <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <i class="nav-link-icon lnr-inbox"></i>
-                                            <span>
-                                                Inbox
-                                            </span>
-                                            <div class="ml-auto badge badge-pill badge-secondary">86</div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <i class="nav-link-icon lnr-book"></i>
-                                            <span>
-                                                Book
-                                            </span>
-                                            <div class="ml-auto badge badge-pill badge-danger">5</div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <i class="nav-link-icon lnr-picture"></i>
-                                            <span>
-                                                Picture
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a disabled href="javascript:void(0);" class="nav-link disabled">
-                                            <i class="nav-link-icon lnr-file-empty"></i>
-                                            <span>
-                                                File Disabled
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{-- product info --}}
+            <div class="row">
+                <div class="col-md-4 my-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        alt="{{ $product->name }}_image" class="img-fluid" width="200">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ $product->name }}&background=12e100"
+                                        alt="{{ $product->name }}_image" class="img-fluid" width="200">
+                                @endif
+                            </div>
+                            <div class="product-detail">
+                                <h6 class="mt-4 mb-0 text-muted">Product name:</h6>
+                                <div class="display-4">{{ $product->name }}</div>
+                            </div>
+
+                            <div class="product-detail">
+                                <h6 class="mt-4 mb-0 text-muted">Section:</h6>
+                                <div class="h5 font-weight-bold">
+                                    {{ $product->subcategory->category->section->name }}</div>
+                            </div>
+
+                            <div class="product-detail">
+                                <h6 class="mt-4 mb-0 text-muted">Category:</h6>
+                                <div class="h5 font-weight-bold">{{ $product->subcategory->category->name }}</div>
+                            </div>
+
+                            <div class="product-detail">
+                                <h6 class="mt-4 mb-0 text-muted">Subcategory:</h6>
+                                <div class="h5 font-weight-bold">{{ $product->subcategory->name }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 my-3">
+                    <div class="card">
+                        <div class="card-header py-0">
+                            <div>Product info</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="product-info">
+                                <label class="text-muted h6">Code:</label>
+                                <div>{{ $product->code }}</div>
+                            </div>
+                            <hr>
+                            <div class="product-info">
+                                <label class="text-muted h6">Color:</label>
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle mr-2"
+                                        style="background-color: {{ $product->color }}; width: 30px; height: 30px;">
+                                    </div>
+                                    <div>{{ $product->color }}</div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="product-info">
+                                <label class="text-muted h6">Price:</label>
+                                <div>{{ $product->price }} MMK</div>
+                            </div>
+                            <hr>
+                            <div class="product-info">
+                                <label class="text-muted h6">Discount:</label>
+                                <div>{{ $product->discount }} MMK</div>
+                            </div>
+                            <hr>
+                            <div class="product-info">
+                                <label class="text-muted h6">Weight:</label>
+                                <div>{{ $product->weight }} g</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="card-header py-0">
+                            <div>Website info</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="website-info">
+                                <label class="text-muted h6">Meta title:</label>
+                                <div>{{ $product->meta_title }}</div>
+                            </div>
+                            <hr>
+                            <div class="website-info">
+                                <label class="text-muted h6">Meta description:</label>
+                                <div>{{ $product->meta_description }}</div>
+                            </div>
+                            <hr>
+                            <div class="website-info">
+                                <label class="text-muted h6">Meta keywords:</label>
+                                <div>{{ $product->meta_keywords }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 my-3">
+                    <div class="card">
+                        <div class="card-header">Product attributes</div>
+                        <div class="card-body">
+                            <div class="attr-section">
+                                <div class="mb-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="border d-inline-block font-weight-bold">Small</h6>
+                                    <button class="btn btn-outline-info" id="small_attr">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Price :</div>
+                                    <div>price</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Stock :</div>
+                                    <div>100</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>SKU :</div>
+                                    <div>sku</div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="attr-section">
+                                <div class="mb-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="border d-inline-block font-weight-bold">Medium</h6>
+                                    <button class="btn btn-outline-info" id="medium_attr">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Price :</div>
+                                    <div>price</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Stock :</div>
+                                    <div>100</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>SKU :</div>
+                                    <div>sku</div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="attr-section">
+                                <div class="mb-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="border d-inline-block font-weight-bold">Large</h6>
+                                    <button class="btn btn-outline-info" id="large_attr">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Price :</div>
+                                    <div>price</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>Stock :</div>
+                                    <div>100</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>SKU :</div>
+                                    <div>sku</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- setting form --}}
-            <div class="main-card mb-3 card">
-                <div class="card-body">
-                    <h5 class="card-title">Product info</h5>
-                    <table class="table table-hover table-bordered">
-                        <thead class="table-primary">
-                            <th colspan="2" class="text-center">Detail information</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>Name</th>
-                                <td>{{ $product->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Product Code</th>
-                                <td>{{ $product->code ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <th>Section</th>
-                                @if ($product->subcategory->category->section->status == 1)
-                                    <td>{{ $product->subcategory->category->section->name ?? 'no section' }}</td>
-                                @else
-                                    <td>{{ $product->subcategory->category->section->name ?? 'no section' }}
-                                        <small class="bg-danger text-white font-bold rounded-pill p-1 mx-2">Inactive</small>
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Category</th>
-                                @if ($product->subcategory->category->status == 1)
-                                    <td>{{ $product->subcategory->category->name ?? 'no category' }}</td>
-                                @else
-                                    <td>{{ $product->subcategory->category->name ?? 'no category' }}
-                                        <small class="bg-danger text-white font-bold rounded-pill p-1 mx-2">Inactive</small>
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Subcategory</th>
-                                @if ($product->subcategory->status == 1)
-                                    <td>{{ $product->subcategory->name ?? 'no category' }}</td>
-                                @else
-                                    <td>{{ $product->subcategory->name ?? 'no category' }}
-                                        <small class="bg-danger text-white font-bold rounded-pill p-1 mx-2">Inactive</small>
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Image</th>
-                                @if ($product->image)
-                                    <td>
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="product img"
-                                            width="100">
-                                    </td>
-                                @else
-                                    <td>
-                                        <img src="https://ui-avatars.com/api/?name={{ $product->name }}" alt="product img"
-                                            width="100">
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Product color</th>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="d-inline-block my-0 mr-2 rounded-circle"
-                                            style="background-color:{{ $product->color }}; width: 1.5em; height:1.5em">
-                                        </div>
-                                        <div class="d-inline-block">{{ $product->color }}</div>
-                                    </div>
+            <!-- end product info -->
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Price</th>
-                                <td>{{ $product->price ?? '-' }} MMK</td>
-                            </tr>
-                            <tr>
-                                <th>Discount</th>
-                                <td>{{ $product->discount ?? '-' }} MMK</td>
-                            </tr>
-                            <tr>
-                                <th>Feature</th>
-                                <td>
-                                    @php
-                                        $index = rand(0,6);
-                                        $badge_colors = ['light', 'dark', 'danger', 'success', 'warning',
-                                                        'secondary', 'primary'];
-                                    @endphp
-                                    <div class="badge badge-{{$badge_colors[$index]}}">{{ $product->feature ?? '-' }}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Url</th>
-                                <td>{{ $product->url }}</td>
-                            </tr>
-                            <tr>
-                                <th>Meta title</th>
-                                <td>{{ $product->meta_title }}</td>
-                            </tr>
-                            <tr>
-                                <th>Meta description</th>
-                                <td>{{ $product->meta_description }}</td>
-                            </tr>
-                            <tr>
-                                <th>Meta_keywords</th>
-                                <td>{{ $product->meta_keywords }}</td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                @if ($product->status == 1)
-                                    <td><span class="badge badge-success">Active</span></td>
-                                @else
-                                    <td><span class="badge badge-danger">Inactive</span></td>
-                                @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="mt-5 text-right">
-                        <a href="{{ route('admin.products.index') }}">
-                            <button class="btn btn-primary px-5">Back</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(function() {
+            let id_num = 1;
+            // $(document).on('click', '.add_product_attr_div', function(e) {
+            //     e.preventDefault();
+            //     let html = `
+            //     <div class="col-12 form-list">
+            //         <div class="row">
+            //             <div class="col-3">
+            //                 <label for="sku">SKU</label>
+            //                 <input type="text" name="sku[]" class="form-control" required>
+            //             </div>
+            //             <div class="col-3">
+            //                 <label>Size</label>
+            //                 <div>
+            //                     <input class="size_radio_btn" type="radio" name="size${id_num}" id="small_size_${id_num}"
+            //                         data-id="small_size" value="small" required>
+            //                     <label id="small_size_label_${id_num}" class="py-1 px-2 border rounded"
+            //                         for="small_size">S</label>
+            //                     <input class="size_radio_btn" type="radio" name="size${id_num}" id="medium_size_${id_num}"
+            //                         data-id="medium_size" value="medium" required>
+            //                     <label id="medium_size_label_${id_num}" class="py-1 px-2 border rounded"
+            //                         for="medium_size">M</label>
+            //                     <input class="size_radio_btn" type="radio" name="size${id_num}" id="large_size_${id_num}"
+            //                         data-id="large_size" value="large" required>
+            //                     <label id="large_size_label_${id_num}" class="py-1 px-2 border rounded"
+            //                         for="large_size">L</label>
+            //                 </div>
+            //             </div>
+            //             <div class="col-3">
+            //                 <label for="price">Price</label>
+            //                 <input type="text" name="price[]" class="form-control" required>
+            //             </div>
+            //             <div class="col-3">
+            //                 <label for="stock">Stock</label>
+            //                 <input type="text" name="stock[]" class="form-control" required>
+            //             </div>
+            //         </div>
+            //     </div>
+            //     `;
+            //     $('#product_attr_div').append(html);
+            //     id_num++
+            // })
+            $(document).on('click', '#product_attr_btn', function(e) {
+                e.preventDefault();
+                $('#product_attr_form').trigger('submit');
+            })
+        })
+    </script>
 @endsection

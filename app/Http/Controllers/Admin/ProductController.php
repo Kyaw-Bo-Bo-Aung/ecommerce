@@ -173,4 +173,9 @@ class ProductController extends Controller
             'subcategories' => $subcategories
         ]);
     }
+
+    public function postAttributes(Request $request)
+    {
+        return $request->all();
+    }
 }

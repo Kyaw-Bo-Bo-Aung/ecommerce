@@ -40,3 +40,47 @@
 .app-page-title{
     padding: 10px 30px;
 }
+/*================ product ================*/
+.product-info{
+    display: flex;
+    justify-content: space-between;
+}
+.product-info label{
+    font-weight: bolder;
+}
+.attr-section h6{
+    padding: 5px;
+    margin: 0;
+    background: var(--background-color);
+    border-radius: 5px;
+}
+.size_radio_btn{
+    /* display: none; */
+}
+label[id^="small_size_label"]:hover,
+label[id^="medium_size_label"]:hover,
+label[id^="large_size_label"]:hover
+{
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+input[id ^= 'small_size']:checked ~ 
+label[id ^= "small_size_label"]
+{
+    background-color: var(--custom-dark);
+    color: white;
+}
+input[id ^= 'medium_size']:checked ~ 
+label[id ^= "medium_size_label"]
+{
+    background-color: var(--custom-dark);
+    color: white;
+}
+input[id ^= 'large_size']:checked ~ 
+label[id ^= "large_size_label"]
+{
+    background-color: var(--custom-dark);
+    color: white;
+}
